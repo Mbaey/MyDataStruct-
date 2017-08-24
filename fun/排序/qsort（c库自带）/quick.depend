@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1479991197 source:d:\userdata\c501-001\desktop\quick\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+
+1479995076 source:d:\userdata\c501-001\desktop\quick（error）\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+
+1479995078 source:g:\大学\c\code\fun\排序\qsort（c库自带）\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+

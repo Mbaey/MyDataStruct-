@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1481506151 source:d:\abc\color.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"color.h"
+
+1481506172 d:\abc\color.h
+
+1481509452 source:d:\abc\main.c
+	<stdio.h>
+

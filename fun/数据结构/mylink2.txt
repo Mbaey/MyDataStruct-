@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+typedef struct link
+{
+	int data;
+	struct link *next;
+}L;
+//1.²åÈë 2.É¾³ý 3.²éÕÒ¡£¡£¡£¡£
+void init_link(L *h)
+{
+	h->data = 0;
+	h->next = NULL;
+}
+
+void insert_link(L *h, int place, int data) //1.head 2.body 3.rear
+{
+	L *r = NULL;	
+	r =  (L*)malloc(sizeof(L));
+	if(!r)	{printf("No memory!");	exit(0);} 
+	r->next = NULL;
+	r->data = data;
+
+	for(int i = 0; i < place; i++)
+		h = h->next;
+	
+	r->next = h->next;
+	h->next = r;	
+}
+
+L* append_link(int n)
+{
+	L *p = NULL, *r = NULL, *h = NULL; // pre rear
+	
+	for(int i = 0; i < n; i++)
+	{
+		r =  (L*)malloc(sizeof(L));
+		if(!r)	{printf("No memory!");	exit(0);} 
+		r->next = NULL;
+		
+		printf("No.%d data is:\n", i + 1);
+		scanf("%d", &r->data);
+		if(!p)
+			h = r;
+		else
+			p->next = r;
+		p = r;
+	}
+	return h;
+}	
+
+void display_link(L *h)
+{
+	int i=1;
+	h = h->next;
+	while(h)
+	{
+		printf("No.%d: %d\n", i, h->data);
+		h = h->next;
+		i++;
+	}
+}
+
+void destroy_link(L *h)
+{
+	L *p = h->next, *n = h->next;
+	
+	while(n)
+	{
+		p = n;
+		n = n->next;
+		free(p);
+	}
+}
+
+int main()
+{
+	L h;
+	init_link(&h);
+	h.next = append_link(5);
+	display_link(&h);
+	
+	insert_link(&h, 5, 100);
+	display_link(&h);
+	destroy_link(&h);
+	
+    return 0;
+}

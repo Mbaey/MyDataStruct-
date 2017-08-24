@@ -1,0 +1,23 @@
+# depslib dependency file v1.0
+1481430564 source:d:\debug\main.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<string.h>
+	<time.h>
+
+1481422270 source:d:\debug\snack.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<string.h>
+	<time.h>
+	"snack.h"
+
+1481425304 d:\debug\snack.h
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<string.h>
+	<time.h>
+

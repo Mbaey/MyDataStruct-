@@ -1,0 +1,20 @@
+# depslib dependency file v1.0
+1480728556 source:d:\c51\c语言\head\main.c
+	<stdio.h>
+	<stdlib.h>
+	"name.h"
+
+1480728008 d:\c51\c语言\head\name.h
+	<stdio.h>
+
+1480728726 source:c:\users\administrator\desktop\。h文件怎么用？\main.c
+	<stdio.h>
+	<stdlib.h>
+	"name.h"
+
+1480901002 c:\users\administrator\desktop\。h文件怎么用？\name.h
+
+1480900731 source:c:\users\administrator\desktop\。h文件怎么用？\name.c
+	<stdio.h>
+	"name.h"
+

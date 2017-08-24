@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1482110099 source:d:\de\main.c
+	<stdio.h>
+	<stdlib.h>
+	<assert.h>
+
+1482108753 source:d:\de\untitled1.c
+	<stdio.h>
+

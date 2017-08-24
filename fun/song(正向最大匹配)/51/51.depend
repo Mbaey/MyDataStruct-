@@ -1,0 +1,65 @@
+# depslib dependency file v1.0
+1483587340 source:d:\51\51\head.c
+	<stdio.h>
+	<stdlib.h>
+	"head.h"
+	<string.h>
+
+1483587679 source:d:\51\51\main.c
+	<stdio.h>
+	<stdlib.h>
+	"head.h"
+	<string.h>
+
+1483588409 d:\51\51\head.h
+
+1483588410 source:d:\de\song\51\head.c
+	<stdio.h>
+	<stdlib.h>
+	"head.h"
+	<string.h>
+
+1483588410 d:\de\song\51\head.h
+
+1484054671 source:d:\de\song\51\main.c
+	<stdio.h>
+	<stdlib.h>
+	"head.h"
+	<string.h>
+
+1484280780 source:d:\51\song\51\head.c
+	<stdio.h>
+	<stdlib.h>
+	"head.h"
+	<string.h>
+
+1484280403 d:\51\song\51\head.h
+
+1484280638 source:d:\51\song\51\main.c
+	<stdio.h>
+	<stdlib.h>
+	"head.h"
+	<string.h>
+
+1484536774 source:d:\51\song(worng)\51\head.c
+	<stdio.h>
+	<stdlib.h>
+	"head.h"
+	<string.h>
+
+1484536774 d:\51\song(worng)\51\head.h
+
+1484537345 source:d:\51\song(worng)\51\main.c
+	<stdio.h>
+	<stdlib.h>
+	"head.h"
+	<string.h>
+
+1484536776 source:g:\大学\c\code\fun\song(正向最大匹配)\51\head.c
+	<stdio.h>
+	<stdlib.h>
+	"head.h"
+	<string.h>
+
+1484536776 g:\大学\c\code\fun\song(正向最大匹配)\51\head.h
+

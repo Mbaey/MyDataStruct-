@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1477270164 source:d:\shuzu\main.c
+	<stdio.h>
+	<stdlib.h>
+

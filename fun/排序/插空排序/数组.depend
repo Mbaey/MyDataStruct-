@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1477272986 source:d:\数组\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1478611334 source:g:\大学\c\code\homework\16.10.24\插空排序\main.c
+	<stdio.h>
+	<stdlib.h>
+

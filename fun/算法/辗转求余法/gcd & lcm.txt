@@ -1,0 +1,25 @@
+#include<cstdio>
+int gcd(int a, int b)
+{
+    return b==0 ? a : gcd(b, a%b);
+}
+
+int gcd2(int a, int b){
+	int t;
+	while(b){
+		t=a%b; 
+		a=b; 
+		b=t;
+	} 
+	return a;
+} 
+
+
+int main(){
+    int a, b;
+    a=2;
+    b=7;
+    printf("gcd(%d, %d) is: %d\n", a, b, gcd(a, b)); //辗转求余法 最大公约数
+    printf("lcm(%d, %d) is: %d\n", a, b, a/gcd(a, b)*b);//最小公倍数 gcd*lcm == a*b
+    return 0;
+}
