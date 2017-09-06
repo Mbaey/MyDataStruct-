@@ -7,7 +7,22 @@ using namespace std;
 
 #define  OK		1
 #define  ERROR		-1
+//多项式加法 乘法就是两个for循环。
+struct Polynomial{
+    float coef=0; //系数
+    int expn=0; //指数
+    Polynomial()=default;
+    Polynomial(float c, int e) : coef(c), expn(e){};
+    ~Polynomial(){};
+    void negate(){ coef*=-1;}
 
+};
+ostream &operator<<(ostream &os, const Polynomial p){ os << p.coef <<"x^" << p.expn; return os;}
+Polynomial operator+(const Polynomial p1, const Polynomial p2) { Polynomial sum(p1.coef+p2.coef, p1.expn); return sum;}//指数相同时+ - 才有效
+Polynomial operator-(const Polynomial p1, const Polynomial p2) { Polynomial sum(p1.coef-p2.coef, p1.expn); return sum;}
+bool operator<(const Polynomial p1, const Polynomial p2) { return p1.expn < p2.expn;}
+bool operator>(const Polynomial p1, const Polynomial p2) { return p1.expn > p2.expn;}
+bool operator==(const Polynomial p1, const Polynomial p2) { return p1.expn == p2.expn;}
 template <class T>
 struct Node{
     public:
@@ -44,6 +59,47 @@ class LinkedList
         int update(int index, T d);
         int search(T d);//1 ok -1 not found
         int insert(int index, T d);
+        void AddPolyn(const LinkedList<T> &p2,LinkedList<T> &res){
+            int sumLen = len + p2.len;
+
+
+            Node<T> *p= head->next;
+            Node<T> *q = p2.head->next;
+            for(int i=0; i<sumLen; i++){
+                if(p==NULL&&q==NULL){
+                    break;
+                }else if(p==NULL){
+                    res.push_back(q->data);
+                    q= q->next;
+                }else if(q==NULL){
+                    res.push_back(p->data);
+                    p= p->next;
+                }else{
+                    if(p->data < q->data){//p指数小
+                        res.push_back(p->data);
+                        p= p->next;
+                    }else if(p->data > q->data){
+                        res.push_back(q->data);
+                        q= q->next;
+                    }else{
+                        Polynomial data  = p->data + q->data;
+                        if(data.coef != 0)
+                            res.push_back(data);
+                        q = q->next;
+                        p = p->next;
+                    }
+                }
+
+            }
+
+        }
+        int negatePolyn(){
+            for(Node<T> *p = head->next; p != NULL ; p = p->next){
+                p->data.negate();
+            }
+            return OK;
+        }
+
 };
 
 template <class T>  LinkedList<T>::LinkedList(){
@@ -172,22 +228,25 @@ template <class T> int LinkedList<T>::search(T d){
     return ERROR;
 }
 int main(){
-     LinkedList<int> myList;
+    LinkedList<Polynomial> myPoly1, myPoly2;
+    Polynomial a(1,1); Polynomial b(2,2);
+    myPoly1.push_back(a); myPoly1.push_back(b);
+    Polynomial c(3,2); Polynomial d(5,5);
+    myPoly2.push_back(c);
+    myPoly2.push_back(d);
+    bool f (a<b);
+    cout << f << endl;
+    myPoly1.display();
+    myPoly2.negatePolyn();
+    myPoly2.display();
+    LinkedList<Polynomial> myPoly3 ;
+    myPoly1.AddPolyn(myPoly2, myPoly3);
 
-    myList.push_back(10);
-    myList.push_back(100);
-    myList.push_back(1000);
-    myList.push_head(88);
+    myPoly1.display();
+    myPoly2.display();
+    myPoly3.display();
 
-
-    myList.display();
-    myList.update(2, 666);
-    cout << myList.at(3)<< endl;
-    myList.erase(1);
-    cout << myList.len<< endl;
-    myList.display();
-
-
+    cout << "Hello world" << endl;
     return 0;
 }
 

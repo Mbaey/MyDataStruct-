@@ -32,6 +32,7 @@ public:
     Status erase(int index);
     Status insert(int index, ElemType e);
     Status update(int index, ElemType e);
+    int search(ElemType e);
 
 };
 
@@ -116,7 +117,16 @@ Status ArrayList::update(int index, ElemType e){
         return ERROR;
     }
 }
-
+int ArrayList::search(ElemType e){
+    int i;
+    for(i=0; i<length; i++)
+    {
+        if(array[i] == e){
+            return i;
+        }
+    }
+    return ERROR;
+}
 void union_Array(ArrayList *L, int a[], int b[], int aLen, int bLen){
     int n = aLen + bLen;
     int i, c=0, d=0;
@@ -148,69 +158,9 @@ int main()
     myList.insert(1, 888);
     myList.update(2, 666);
     myList.display();
+
+    cout << myList.search(888) << endl;
 	return(0);
 }
-
-
-//
-//Status Init_SqList( ArrayList *L )
-//{
-////    cout << "init" << endl;
-//	L->array = ( ElemType * ) malloc( MAX_SIZE * sizeof(ElemType) );
-//	if ( !L->array )
-//		return(ERROR);
-//	else { L->length = 0;    return(OK);  }
-//}
-//
-//Status Push_SqList( ArrayList *L, ElemType e)
-//{
-//    if ( L->length >= MAX_SIZE )
-//	{
-//		printf( "线性表溢出!\n" );
-//		return(ERROR);
-//	}
-//
-//}
-//
-//
-//Status Insert_SqList( ArrayList *L, int i, ElemType e )
-//{
-//	int j;
-//	if ( i < 0 || i > L->length - 1 )
-//		return(ERROR);
-//	if ( L->length >= MAX_SIZE )
-//	{
-//		printf( "线性表溢出!\n" );
-//		return(ERROR);
-//	}
-//
-//    for ( j = L->length - 1; j >= i - 1; --j )
-//    {
-//        L->array[j + 1] = L->array[j];
-//    }
-//
-///*  i-1位置以后的所有结点后移  */
-//	L->array[i - 1] = e; /*  在i-1位置插入结点  */
-//	L->length++;
-//	return(OK);
-//}
-//
-//
-//ElemType  Delete_SqList( ArrayList *L, int i )
-//{
-//	int k;   ElemType x;
-//	if ( L->length == 0 )
-//	{
-//		printf( "线性表L为空!\n" ); return(ERROR);
-//	}else if ( i < 1 || i > L->length )
-//	{
-//		printf( "要删除的数据元素不存在!\n" );
-//		return(ERROR);
-//	}else { x = L->array[i - 1]; /*保存结点的值*/
-//		for ( k = i; k < L->length; k++ )
-//			L->array[k - 1] = L->array[k];
-//		/*  i位置以后的所有结点前移  */
-//		L->length--;  return(x); }
-//}
 
 
