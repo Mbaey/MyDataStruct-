@@ -23,10 +23,10 @@ struct MyStack{
 
 };
 void Operator(MyStack<int> &num, MyStack<char> &op){
-    char op1 = op.getPop(); op.pop();     //取操作符的栈顶元素
-    int num1 = num.getPop(); num.pop();    //取操作数的栈顶元素
-    int num2 = num.getPop(); num.pop();   //取操作数的栈顶元素
-    if(op1 == '+'){                    //如果操作数为+，则执行两个操作数的求和操作，并将结果压入操作数栈中
+    char op1 = op.getPop(); op.pop();
+    int num1 = num.getPop(); num.pop();
+    int num2 = num.getPop(); num.pop();
+    if(op1 == '+'){
         num.push(num2 + num1);
     }else if(op1 == '-'){
         num.push(num2 - num1);
@@ -46,7 +46,7 @@ int main(){
 //    op.push('+');
 //    cout <<  op.getPop();
     string s("1+2*(1+2)");
-    char top=0;
+    int top=0;
     for(auto c : s){
         if(isdigit(c)){ num.push(c-'0');   }
         else if(c=='+' || c=='-'){
@@ -70,9 +70,14 @@ int main(){
             }
             op.pop();
         }
+        cout << "No." << ++top << "次运算" << endl;
+        op.display();
+        num.display();
 
     }
     while(!op.empty()){//没有()了
+        cout << "No." << ++top << "最后一次次运算" << endl;
+
         Operator(num,op);
         num.display();
     }
