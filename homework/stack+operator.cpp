@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <iostream>
+#include <sstream>
 #include <cstring>
 #include <cstdlib>
 
@@ -36,20 +37,28 @@ void Operator(MyStack<int> &num, MyStack<char> &op){
         num.push(num2 / num1);
     }
 }
-
+int stoi(string s){    stringstream ss(s);    int res;    ss >> res;    return res;}
 int main(){
     MyStack<int> num;
     MyStack<char> op;
 
-//    op.push('+');
-//    op.pop();
-//    op.push('+');
-//    cout <<  op.getPop();
-    string s("1+2*(1+2)");
+    string s("11+2*(1998+2)");
+    string n;
     int top=0;
     for(auto c : s){
-        if(isdigit(c)){ num.push(c-'0');   }
-        else if(c=='+' || c=='-'){
+        if(isdigit(c)){
+            n+=c;
+            continue;
+        }
+        else if(!n.empty()){
+//            cout << stoi(n) << endl;
+            num.push(stoi(n));
+            n.clear();
+        }
+
+
+
+        if(c=='+' || c=='-'){
 
             while(!op.empty() && (op.getPop()=='+' || op.getPop()=='-' || op.getPop()=='*' || op.getPop()=='/') ){//  */+- 的优先级都比 + - 大
                 Operator(num,op);
