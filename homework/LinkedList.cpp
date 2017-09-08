@@ -1,8 +1,7 @@
-#include <stdio.h>
+#include <cstdio>
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
-//#include "LinkedList.h"
 using namespace std;
 
 #define  OK		1
@@ -22,16 +21,13 @@ struct Node{
     ~Node();
 };
 
-template <class T> Node<T>::~Node(){
-//    cout << "data:"<< data <<"   next:"<< next << "xi gou han shu" << endl;
-}
 
 template <class T>
 class LinkedList
 {
     public:
         Node<T> *head=NULL, *tail=NULL;
-        int len=0;
+        int len=0;//len是当前拥有的元素-1
     public:
         LinkedList();
         ~LinkedList();
@@ -41,10 +37,15 @@ class LinkedList
         void display();
         T at(int index);
         int erase(int index);
+        int clear();
         int update(int index, T d);
         int search(T d);//1 ok -1 not found
         int insert(int index, T d);
 };
+
+template <class T> Node<T>::~Node(){
+//    cout << "data:"<< data <<"   next:"<< next << "xi gou han shu" << endl;
+}
 
 template <class T>  LinkedList<T>::LinkedList(){
     head = new Node<T>();
@@ -91,7 +92,7 @@ template <class T> void LinkedList<T>::push_head(T d){
 template <class T> void LinkedList<T>::display(){
 
     for(Node<T> *p = head->next; p != NULL && p->next != NULL; p = p->next){
-        cout << p->data << " + ";
+        cout << p->data << " ";
     }
     if(len != 0)
         cout << tail->data << endl;
@@ -132,6 +133,10 @@ template <class T> int LinkedList<T>::erase(int index){
 
 
         return OK;
+    }else if(index == 0){
+        tail->data = 0;
+        len--;
+        return OK;
     }else if(index == len - 1){
         (*tail->prev).next = NULL;
         tail = tail->prev;
@@ -171,6 +176,14 @@ template <class T> int LinkedList<T>::search(T d){
     }
     return ERROR;
 }
+template <class T> int LinkedList<T>::clear(){
+    int n = len;
+    for(int i=0; i< n ;i++){
+        erase(0);
+    }
+    return OK;
+}
+
 int main(){
      LinkedList<int> myList;
 

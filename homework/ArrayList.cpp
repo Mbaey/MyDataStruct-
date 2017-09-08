@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <cstdio>
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
@@ -18,7 +18,7 @@ typedef  int	ElemType;
 class ArrayList
 {
 public:
-    //如果直接用vector就方便很多了=。=
+    //如果直接用vector就方便很多了
 	ElemType	*array;
 	int		length=0;
     int Max_size;
