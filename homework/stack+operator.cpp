@@ -51,38 +51,38 @@ int main(){
         if(isdigit(c)){ num.push(c-'0');   }
         else if(c=='+' || c=='-'){
 
-            while(!op.empty() && (op.getPop()=='+' || op.getPop()=='-' || op.getPop()=='*' || op.getPop()=='/') ){//  */+- µÄÓÅÏÈ¼¶¶¼±È + - ´ó
+            while(!op.empty() && (op.getPop()=='+' || op.getPop()=='-' || op.getPop()=='*' || op.getPop()=='/') ){//  */+- çš„ä¼˜å…ˆçº§éƒ½æ¯” + - å¤§
                 Operator(num,op);
             }
             op.push(c);
         }
         else if(c=='*' || c=='/'){
 
-            while(!op.empty() && (op.getPop()=='*' || op.getPop()=='/') ){//  */ µÄÓÅÏÈ¼¶¶¼±È / * ´ó
+            while(!op.empty() && (op.getPop()=='*' || op.getPop()=='/') ){//  */ çš„ä¼˜å…ˆçº§éƒ½æ¯” / * å¤§
                 Operator(num,op);
             }
             op.push(c);
         }
         else if(c=='('){            op.push(c);        }
         else if(c==')'){
-            while(!op.empty() && (op.getPop() !='(') ){//  Óöµ½ £¨  Ö®Ç°Ò»Ö±ÔËËã
+            while(!op.empty() && (op.getPop() !='(') ){//  é‡åˆ° ï¼ˆ  ä¹‹å‰ä¸€ç›´è¿ç®—
                 Operator(num,op);
             }
             op.pop();
         }
-        cout << "No." << ++top << "´ÎÔËËã" << endl;
+        cout << "No." << ++top << "æ¬¡è¿ç®—" << endl;
         op.display();
         num.display();
 
     }
-    while(!op.empty()){//Ã»ÓĞ()ÁË
-        cout << "No." << ++top << "×îºóÒ»´Î´ÎÔËËã" << endl;
+    while(!op.empty()){//æ²¡æœ‰()äº†
+        cout << "No." << ++top << "æœ€åä¸€æ¬¡æ¬¡è¿ç®—" << endl;
 
         Operator(num,op);
         num.display();
     }
-	//´ËÊ±Õ»¶¥ÔªËØ Îªres
-	cout << num.getPop() << endl;
+	//æ­¤æ—¶æ ˆé¡¶å…ƒç´  ä¸ºres
+	cout << s << " = " << num.getPop() << endl;
 
     return 0;
 }
