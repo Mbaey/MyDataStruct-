@@ -1,0 +1,81 @@
+#include <cstdio>
+#include <cstring>
+#include <iostream>
+#include <memory.h>
+#define SIZE 14
+//0 1 2 3 4 5 6 7
+//-1 -1 0
+//T串的指针不回溯
+//P串的指针不匹配时 k = next[k];
+//if(0)
+//    按原来的方法 T后移
+//else
+//    T不动， T-》T[nent[]]
+
+
+using namespace std;
+int mpNext[SIZE];
+
+//c a a t c a t
+void preMp(const char *x, int m) {
+   int q = 1;
+   int k = 0;
+   mpNext[0] = -1;
+   while (q < m) {
+        if(k == -1 || x[q] == x[k])
+        {
+            q++;
+            k++;
+            mpNext[q] = k;
+        }
+        else{
+            k = mpNext[k];
+        }
+   }
+}
+
+int KMP(string T,string P){
+    int i=0, j=0;
+    while( i<T.length())
+    {
+
+        if(T[i] == P[j] || j == -1){
+            i++;
+            j++;
+        }else{
+            j = mpNext[j];
+        }
+
+        if(j==P.length()){
+            return i - j;
+        }
+    }
+    return -1;
+//    int i, j;
+//    int n = T.length();
+//    int m = P.length();
+//    i = j = 0;
+//    while (j < n) {
+//        while (i > -1 && P[i] != T[j])
+//            i = mpNext[i];
+//        i++;
+//        j++;
+//        if (i >= m) {
+//            cout<<"Matching index found at: "<<j - i<<endl;
+//            i = mpNext[i];
+//        }
+//    }
+}
+
+int main(){
+    char T[] = "ctcabcatcaatcatbcadtcaabcabcadat";
+    char P[] = "caatcat";
+    int lenP = strlen(P);
+    preMp(P, lenP);
+
+    for(int i=0; i<lenP; i++) cout<< mpNext[i] << " ";
+    cout << '\n';
+
+    cout << KMP(T, P);
+    return 0;
+}

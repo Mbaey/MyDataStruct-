@@ -1,0 +1,41 @@
+#include <cstdio>
+#include <cstring>
+#include <iostream>
+#include <memory.h>
+#define SIZE 14
+
+using namespace std;
+
+int BF(string T,string P){
+    for(int i=0; i<T.length(); i++)
+    {
+        int t = i, f=1;
+        for(int j=0; j<P.length(); j++)
+        {
+            if(T[t] == P[j]){
+                t++;
+            }else{
+                f=0;
+                break;
+            }
+        }
+
+        if(f==1){
+            return i;
+        }
+    }
+    return -1;
+}
+
+int main(){
+    char T[] = "aabcd";
+    char P[] = "cd";
+    int x = BF(T, P);
+    if(x>=0){
+        cout << "success" << "  position is " << x;
+    }else{
+        cout << "false";
+    }
+
+    return 0;
+}
