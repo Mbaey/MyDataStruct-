@@ -49,13 +49,6 @@ void SearchTree(T *h, int level)
         SearchTree(h->lchild, level + 1);
         SearchTree(h->rchild, level + 1);
     }
-
-
-//    Visit(h, level);
-//    if(!h->lchild)
-//        SearchTree(h->lchild, level + 1);
-//    if(!h->rchild)
-//        SearchTree(h->rchild, level + 1);
 }
 
 void DestroyTree(T **h)
@@ -67,7 +60,6 @@ void DestroyTree(T **h)
         free( *h );
         *h = NULL;
     }
-
 //    if(!h->lchild)
 //        DestroyTree(h->lchild);
 //    if(!h->rchild)
