@@ -10,7 +10,7 @@ using namespace std;
 #define MAX_NUM 20
 
 typedef char VertexType;
-typedef enum {DG, DN, UDG,UDN} GraphKind; //ÓĞÏòÍ¼£¬ÓĞÏàÍø£¬ ÎŞÏàÍ¼£¬ÎŞÏàÍø
+typedef enum {DG, DN, UDG,UDN} GraphKind; //æœ‰å‘å›¾ï¼Œæœ‰ç›¸ç½‘ï¼Œ æ— ç›¸å›¾ï¼Œæ— ç›¸ç½‘
 struct Edge{
     int i,j;
     int weight;
