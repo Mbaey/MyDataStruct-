@@ -59,7 +59,7 @@ int main()
 
     vector<Edge> es, MinTree;
     int n, e;//node edge num
-    freopen("1.txt", "r", stdin);
+    freopen("MinTree&UDG&P174.txt", "r", stdin);
     cin >> n >> e;
     for(int i=0; i<e; i++){
         Edge t;

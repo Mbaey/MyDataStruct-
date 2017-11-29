@@ -458,7 +458,7 @@ struct BiTree{
 void TestQueue();
 int main()
 {
-    freopen(".txt" "r" stdin);
+    freopen("tree.txt" "r" stdin);
     BiTree tree();
 //    string s=  " abcdf#g####hi";
 //    BiTree tree(s.c_str() s.length());

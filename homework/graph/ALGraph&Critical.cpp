@@ -3,6 +3,7 @@
 #include <vector>
 #include <stack>
 #include <algorithm>
+#include <string>
 
 using namespace std;
 
@@ -39,22 +40,28 @@ struct VNode
 
 struct ALGraph
 {
-    vector<VNode> vexs;
+    vector<VNode> OutVexs;
+    vector<VNode> InVexs;
     int vexNum, arcNum;
     ALGraph()=default;
     ALGraph(int n, int e, vector<Edge> es):vexNum(n),arcNum(e)
     {
-        vexs.resize(vexNum);
+        OutVexs.resize(vexNum);
+        InVexs.resize(vexNum);
         for(int i=0; i<n; i++)
         {
             VNode v(i);
-            vexs[i] = v;
+            OutVexs[i] = v;
+            InVexs[i] = v;
         }
         for(int i=0; i<e; i++)
         {
+            //x --> y
             int x=es[i].i, y=es[i].j, w= es[i].weight;
             ArcNode arc(y, w);
-            vexs[x].arcs.push_back(arc);
+            ArcNode arc2(x, w);
+            OutVexs[x].arcs.push_back(arc);
+            InVexs[y].arcs.push_back(arc2);
         }
     };
 
@@ -62,11 +69,11 @@ struct ALGraph
     {
         for(int i=0; i<vexNum; i++)
         {
-            int e= vexs[i].arcs.size();
-            printf("%d\t", vexs[i].data);
+            int e= OutVexs[i].arcs.size();
+            printf("%d\t", OutVexs[i].data);
             for(int j=0; j<e; j++)
             {
-                printf("-%d->%d\t", vexs[i].arcs[j].weight, vexs[i].arcs[j].next);
+                printf("-%d->%d\t", OutVexs[i].arcs[j].weight, OutVexs[i].arcs[j].next);
             }
             putchar('\n');
         }
@@ -98,19 +105,54 @@ struct ALGraph
             res.push(y);
             printf("%d\t", y);
             count++;
-            int e= vexs[y].arcs.size();
+            int e= OutVexs[y].arcs.size();
             for(int j=0; j<e; j++)
             {
-                int next = vexs[y].arcs[j].next;
+                int next = OutVexs[y].arcs[j].next;
                 if(--inDegree[next]==0) vexSta.push(next);
-                if(ve[y] +  vexs[y].arcs[j].weight> ve[next]) ve[next]=ve[y] +  vexs[y].arcs[j].weight;
+                if(ve[y] +  OutVexs[y].arcs[j].weight> ve[next]) ve[next]=ve[y] +  OutVexs[y].arcs[j].weight;
             }
         }
         printf("\n");
 
-//        for(int i : ve){
-//            printf("%d\t", i);
-//        }
+        for(int i : ve)
+        {
+            printf("%d\t", i);
+        }
+        if(count< vexNum)//有环
+            return -1;
+        else
+            return 1;
+    }
+    int DFS_topologicalOrder()
+    {
+        cout << "DFS TopologicalOrder:\t";
+        inDegree.clear();
+        inDegree.resize(vexNum);
+        init_InDegree();
+        count=0;
+
+        vis.clear(), vis.resize(vexNum);
+        ve.clear(), ve.resize(vexNum);
+        vl.clear(), vl.resize(vexNum);
+        for(int i=0; i<vexNum; i++)
+        {
+            if(!inDegree[i] && !vis[i]) DFS_topologicalOrder(i);
+        }
+        cout << endl;
+        printf("ve: ");
+        for(int i : ve)
+        {
+            printf("%d\t", i);
+        }
+        cout << endl;
+        printf("vl: ");
+        for(int i : vl)
+        {
+            printf("%d\t", i);
+        }
+        cout << endl;
+
         if(count< vexNum)//有环
             return -1;
         else
@@ -119,20 +161,78 @@ struct ALGraph
 
     int criticalPath()
     {
-        stack<int> T;
-        if(topologicalOrder(T)==-1) return -1;
 
+        if(DFS_topologicalOrder()==-1) return -1;
+        e.clear(), e.resize(arcNum);
+        l.clear(), l.resize(arcNum);
+        for(int i=0; i<vexNum; i++)
+        {
+            int e= OutVexs[i].arcs.size();
+            for(int j=0; j<e; j++)
+            {
+                int next = OutVexs[i].arcs[j].next, weight=OutVexs[i].arcs[j].weight;
+                int ee, el;
+                ee=ve[i]; el=vl[next]-weight;
+//                char tag = (ee==el)?'*':'';
+                if(ee==el)
+                 printf("%d-%d->%d\n", i, next, weight);
+            }
+        }
+
+        cout << endl;
+        return 0;
     }
 private:
-    vector<int> inDegree, ve, vl, e, l;
+    vector<int> inDegree, ve, vl, e, l, vis;
+    int count;
+    void DFS_topologicalOrder(int y)
+    {
+        vis[y]=1;
+        printf("%d\t", y);
+        count++;
+        int e= OutVexs[y].arcs.size();
+        for(int j=0; j<e; j++)
+        {
+            int next = OutVexs[y].arcs[j].next;
+            --inDegree[next];
+            if(ve[y] +  OutVexs[y].arcs[j].weight> ve[next]) ve[next]=ve[y] +  OutVexs[y].arcs[j].weight;
+            if(count==vexNum-1)
+                for(int j=0; j<vexNum; j++)
+                {
+                    vl[j] = ve[vexNum-1];
+//                    cout << ve[vexNum-1] << "********"<< y<< endl;
+                }
+
+        }
+        for(int i=0; i<vexNum; i++)
+        {
+            //y --> i
+            if(!inDegree[i] && !vis[i])
+            {
+                DFS_topologicalOrder(i);
+//                InVexs[y].arcs[j].weight
+                int e= InVexs[i].arcs.size();
+                for(int j=0; j<e; j++)
+                {
+                    int pre = InVexs[i].arcs[j].next;
+                    int t = vl[i] -  InVexs[i].arcs[j].weight;
+//                    printf("vl[pre]:%d,  vl[i]:%d,   InVexs[i].arcs[j].weight:%d\n", vl[pre], vl[i] ,InVexs[i].arcs[j].weight);
+                    if(t < vl[pre])
+                        vl[pre] = t;
+                }
+
+            }
+        }
+    }
+
     void init_InDegree()
     {
         for(int i=0; i<vexNum; i++)
         {
-            int e= vexs[i].arcs.size();
+            int e= OutVexs[i].arcs.size();
             for(int j=0; j<e; j++)
             {
-                ++inDegree[vexs[i].arcs[j].next] ;
+                ++inDegree[OutVexs[i].arcs[j].next] ;
             }
         }
 //        for(int i : inDegree){
@@ -158,18 +258,10 @@ int main()
 
     G.display();
     G.criticalPath();
-
+//    G.DFS_topologicalOrder();
 
 
 //    display(MinTree, n-1);
 
     return 0;
-}
-void display(int a[], int e)
-{
-    for(int i=0; i<e; i++)
-    {
-        printf("%d ", a[i]);
-    }
-    putchar('\n');
 }
