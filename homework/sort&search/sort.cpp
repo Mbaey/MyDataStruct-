@@ -14,6 +14,11 @@ int choice=0;
 void show_menu();
 int Partition(int *a, int left, int right);
 void quick_sort(int *a, int left, int right);
+void Msort(int sr[], int tr[], int begin, int end);
+void two_path_merge(int *sr, int *tr, int begin, int m, int end);
+
+void HeapAdjust(int a[], int s, int m);
+void heap_sort(int a[], int n);
 
 int main()
 {
@@ -39,14 +44,18 @@ int main()
         case 3:
             quick_sort(b, n);
             break;
-//        case 4:
-//            merge_sort(b, n);
-//            break;
+        case 4:
+            merge_sort(b, n);
+            break;
         case 5:
+            heap_sort(b, n);
+            break;
+        case 6:
             exit(0);
             break;
         }
         show_menu();
+
     }
 
     quick_sort(a, n);
@@ -64,6 +73,14 @@ void in(int *a, int &n)
 void out(int *a, int n)
 {
     for(int i=0; i<n; ++i)
+    {
+        printf("%d\t", a[i]);
+    }
+    printf("\n");
+}
+void out(int *a, int s, int e)
+{
+    for(int i=s; i<=e; ++i)
     {
         printf("%d\t", a[i]);
     }
@@ -96,7 +113,7 @@ void quick_sort(int *a, int left, int right){
 }
 
 
-void merge_sort(int *a, int n);
+
 
 
 void shell_sort(int a[], int n)
@@ -140,13 +157,71 @@ void insert_sort(int *a, int n)
     }
 }
 
+void two_path_merge(int *sr, int *tr, int begin, int m, int end){
+    //将有序的 sr[begin~m] 与sr[m+1~end] 合并成tr
+    int i=begin, r=m+1, l=begin;
+    for(; r<=end && l<=m; ++i){
+        if(sr[l] > sr[r]) tr[i] = sr[r++];
+        else tr[i] = sr[l++];
+    }
+    while(r<=end) tr[i++] = sr[r++];
+    while(l<=m) tr[i++] = sr[l++];
+
+    cout << "sr: "; out(sr, begin, end);
+    cout << "tr: ";  out(tr, begin, end);
+}
+void Msort(int sr[], int tr[], int begin, int end){
+    if(begin==end) tr[end]=sr[end];
+    else{
+        int tr2[MAX_VALUE]={0};
+        int m = (begin+end)/2;
+        Msort(sr, tr2, begin, m);
+        Msort(sr, tr2, m+1, end);
+        two_path_merge(tr2, tr, begin, m, end);
+    }
+}
+
+void merge_sort(int *a, int n){
+    int b[n]={0};
+    Msort(a, b, 0, n-1);
+    a = b;
+}
+
 void show_menu()
 {
     printf("1:insert_sort\n");
     printf("2:shell_sort\n");
     printf("3:quick_sort\n");
     printf("4:merge_sort\n");
-    printf("5:exit\n");
+    printf("5:heap_sort\n");
+    printf("6:exit\n");
     printf("输入你的选择\n");
     cin >> choice;
+}
+//最大堆 是降序
+void HeapAdjust(int a[], int s, int m){
+    //使s到a【1~m】上应该的位置。————往下沉
+    a[0] = a[s];//哨兵
+    for(int j=s*2; j<=m; j*=2){
+        if(j<m && a[j]<a[j+1]) j++;
+        if(a[0]> a[j]) break;   // s比孩子大了。 直接交换  最大堆！！
+        a[s] = a[j]; s = j;   //小孩子上浮
+    }
+    a[s] = a[0];//爸爸下来
+}
+
+void heap_sort(int a[], int n){
+    int b[n+1]={0};
+    for(int i=0; i<n; i++) b[i+1] = a[i];
+    for(int i=n/2; i>0; i--)
+        HeapAdjust(b, i, n);
+    for(int i=n; i>1; i--){
+        b[0] = b[1];
+        b[1] = b[i];
+        b[i] = b[0];
+        HeapAdjust(b, 1, i-1);
+        out(b, 1, n);
+    }
+    out(b, 1, n);
+
 }
