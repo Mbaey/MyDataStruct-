@@ -200,6 +200,7 @@ struct MatrixGraph
     vector<int> Dijkstra(int start)
     {   cout << "Dijkstra path:\t";
         vector<vector<int> > w = arcs;
+        int fa[vexNum]={0};
         for(int i=0; i<vexNum; i++)
         {
             for(int j=0; j<vexNum; j++)
@@ -210,10 +211,10 @@ struct MatrixGraph
 //        display();
         vis.clear();
         vis.resize(vexNum);
-        vis[start]=1;
+//        vis[start]=1;
         vector<int> res(vexNum, INFINITY_VALUE);
-        res[start]=0;
         for(int i=0; i<vexNum; i++) res[i]=w[start][i];
+        res[start]=0;
         for(int j=0; j<vexNum-1; j++)
         {
             int min_cost=INFINITY_VALUE, next=-1;
@@ -235,10 +236,13 @@ struct MatrixGraph
             for(int i=0; i<vexNum; i++)
             {
 
-                if(w[next][i]!= INFINITY_VALUE)
+                if(!vis[i] && w[next][i]!= INFINITY_VALUE)
                 {
                     //进过next能到达的点，更新res
-                    res[i] = min(res[i], res[next] + w[next][i]);
+                    if(res[i] > res[next] + w[next][i]){
+                        res[i] = res[next] + w[next][i];
+                        fa[i] = next;
+                    }
 //                    cout <<res[i]<< "   ***"  <<res[next] + w[next][i]<< endl;
                 }
             }
@@ -251,7 +255,8 @@ struct MatrixGraph
         vis.resize(vexNum);
 //        vis[start]=1;
         cout << "ShortestPath is:\t";
-        show_shortestPath(res, start);
+//        show_shortestPath(res, start);
+        show_shortestPath(res, start, fa);
         cout << endl;
         return res;
     }
@@ -306,6 +311,13 @@ private:
             }
         }
     }
+    void show_shortestPath(const vector<int> &cost, int index, int fa[])
+    {
+        for(int i=0; i<vexNum; i++)
+        {
+            cout << fa[i] << endl;
+        }
+    }
     void show_MinTree(vector<Edge> es, int e)
     {cout << "MinTree is:\t";
         for(int i=0; i<e; i++)
@@ -337,7 +349,7 @@ int main()
 {
     VertexType ver[]= {"v0","v1","v2","v3","v4","v5","v6","v7","v8","v9","v10","v11","v12"};
     int n, e;//node edge num
-    freopen("ShortestPath&DG&P191.txt", "r", stdin);
+    freopen("1.txt", "r", stdin);
 //    freopen("ShortestPath&DG&P189.txt", "r", stdin);
     cin >> n >> e;
     int arc[MAX_NUM][MAX_NUM]= {0};
@@ -350,11 +362,11 @@ int main()
     MatrixGraph G(n, ver,arc, DG);
 
     G.display();
-    G.DFS();
-    G.BFS();
+//    G.DFS();
+//    G.BFS();
 
 //    vector<Edge> MinTree = G.Prim(0);
     G.Dijkstra(0);
-    G.Floyd();
+//    G.Floyd();
     return 0;
 }

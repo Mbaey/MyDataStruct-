@@ -6,44 +6,44 @@
 #include <queue>
 using namespace std;
 
-#define  OK		
-#define  ERROR		-
-#define  MAX_SIZE	
-#define  LIST_INCREMENT	
+#define  OK		1
+#define  ERROR		-1
+#define  MAX_SIZE	100
+#define  LIST_INCREMENT	10
 typedef  int	Status;
 typedef  char	ElemType;
 enum PointerTag{
-    Link Thread
+    Link, Thread
 };
 
 struct BTreeNode{
     ElemType value;
-    BTreeNode *left *right;
-    enum PointerTag LTag=LinkRTag=Link;
+    BTreeNode *lchild, *rchild;
+    enum PointerTag LTag=Link,RTag=Link;
 
     BTreeNode() = default;
-    BTreeNode(ElemType d BTreeNode *l BTreeNode *r):value(d) left(l) right(r){};
+    BTreeNode(ElemType d, BTreeNode *l, BTreeNode *r):value(d), lchild(l), rchild(r){};
     BTreeNode(ElemType d):value(d){};
     ~BTreeNode(){}
     void display(){
         cout << value << " ";
     }
 ///以前没想好，想不出怎么在tree类里递归调用创建树的方法
-//    void createChild(ElemType data int level){
+//    void createChild(ElemType data, int level){
 //
-//        ElemType t=-;
+//        ElemType t=-1;
 //        value = data;
-////        printf("输入值(#退出) level:%d." level);
+////        printf("输入值(#退出), level:%d.", level);
 //        cin >> t;
 //        if(t != '#'){
-//            left = new BTreeNode();
-//            left->createChild(t level + );
+//            lchild = new BTreeNode();
+//            lchild->createChild(t, level + 1);
 //        }
-////        printf("输入值(#退出) level:%d." level);
+////        printf("输入值(#退出), level:%d.", level);
 //        cin >> t;
 //        if(t != '#'){
-//            right = new BTreeNode();
-//            right->createChild(t level + );
+//            rchild = new BTreeNode();
+//            rchild->createChild(t, level + 1);
 //        }
 //
 //    }
@@ -52,19 +52,19 @@ struct BTreeNode{
 struct BiTree{
     BTreeNode *root;
     BiTree() = default;
-    BiTree(const ElemType data[] int len){
-        root = createBiTree(data  len);
+    BiTree(const ElemType data[], int len){
+        root = createBiTree(data, 1, len);
     }
     BiTree(int level){
-        root = createBiTree( level);
+        root = createBiTree(1, level);
     }
     ~BiTree(){
-        BTreeNode *p = root *q=NULL; stack<BTreeNode *> sta;
+        BTreeNode *p = root, *q=NULL; stack<BTreeNode *> sta;
         while(p!=NULL){
-            if(p->right != NULL && p->RTag == Link) sta.push(p->right);
+            if(p->rchild != NULL && p->RTag == Link) sta.push(p->rchild);
             q = p;
             if( p->LTag == Link)
-                p = p->left;
+                p = p->lchild;
             else
                 p = NULL;
             cout << "刪除了" << q->value << endl;
@@ -79,30 +79,30 @@ struct BiTree{
         }
     }
 
-    BTreeNode* createBiTree(int now int level){
+    BTreeNode* createBiTree(int now, int level){
         if(now<=level){
             BTreeNode *current;
             ElemType t;
-    //        puts("输入值(#退出) level:.");
+    //        puts("输入值(#退出), level:1.");
             cin >> t;
             if(t!='#' ){
                 current = new BTreeNode(t);
-                current->left = createBiTree(now+ level);
-                current->right = createBiTree(now+ level);
+                current->lchild = createBiTree(now+1, level);
+                current->rchild = createBiTree(now+1, level);
                 return current;
             }
         }
         return NULL;
     }
-    BTreeNode* createBiTree(const ElemType data[] int now int len){
+    BTreeNode* createBiTree(const ElemType data[], int now, int len){
         if(now<len){
             BTreeNode *current;
             ElemType t=data[now];
-    //        puts("输入值(#退出) level:.");
+    //        puts("输入值(#退出), level:1.");
             if(t!='#' ){
                 current = new BTreeNode(t);
-                current->left = createBiTree(data now* len);
-                current->right = createBiTree(data now*+ len);
+                current->lchild = createBiTree(data, now*2, len);
+                current->rchild = createBiTree(data, now*2+1, len);
                 return current;
             }
         }
@@ -113,9 +113,9 @@ struct BiTree{
         BTreeNode *p = root; stack<BTreeNode *> sta;
         while(p!=NULL){
             cout << p->value << " ";
-            if(p->right!=NULL)
-                sta.push(p->right);
-            p = p->left;
+            if(p->rchild!=NULL)
+                sta.push(p->rchild);
+            p = p->lchild;
             if(p==NULL ){
                 if(sta.empty()){ break; }
                 else{
@@ -130,12 +130,12 @@ struct BiTree{
         BTreeNode *p = root; stack<BTreeNode *> sta;
         if(p!= NULL){
             while( p!=NULL || !sta.empty()){
-                if(p!=NULL) {sta.push(p);  p=p->left;}
+                if(p!=NULL) {sta.push(p);  p=p->lchild;}
                 else{
                     p = sta.top(); sta.pop();
                     p->display();
-                    //if(p->right != NULL) 就是要让p=NULL才能退栈
-                    p = p->right;
+                    //if(p->rchild != NULL) 就是要让p=NULL,才能退栈
+                    p = p->rchild;
                 }
             }
         }else{
@@ -145,18 +145,18 @@ struct BiTree{
     }
 //     节点入栈
 //    直接访问左子树
-//    直到结束，取出访问you子树
-//    .访问节点
+//    直到2结束，取出访问you子树
+//    2.访问节点
     void postOrder(){cout << "后序遍历：";
-        BTreeNode *p = root; stack<pair<BTreeNode* int> > sta;
+        BTreeNode *p = root; stack<pair<BTreeNode*, int> > sta;
         if(p!= NULL){
             while(p!=NULL || !sta.empty()){
                 if(p!=NULL){
-                    sta.push(make_pair(p ));
-                    p = p->left;
+                    sta.push(make_pair(p, 0));
+                    p = p->lchild;
                 }else{
-                    if(sta.top().second == ){
-                        p = sta.top().first->right; sta.top().second++;
+                    if(sta.top().second == 0){
+                        p = sta.top().first->rchild; sta.top().second++;
                     }else{
                         sta.top().first->display();
                         sta.pop();
@@ -177,8 +177,8 @@ struct BiTree{
         while(!que.empty()){
             p = que.front();     que.pop();
             p->display();
-            if(p->left !=NULL) { que.push(p->left); }
-            if(p->right !=NULL) { que.push(p->right); }
+            if(p->lchild !=NULL) { que.push(p->lchild); }
+            if(p->rchild !=NULL) { que.push(p->rchild); }
         }cout << endl;
     }
 
@@ -189,14 +189,14 @@ struct BiTree{
         while(!que.empty()){
             p = que.front();     que.pop();
             if(p->value == tag) return p;
-            if(p->left !=NULL && p->LTag== Link) { que.push(p->left); }
-            if(p->right!=NULL && p->LTag== Link) { que.push(p->right); }
+            if(p->lchild !=NULL && p->LTag== Link) { que.push(p->lchild); }
+            if(p->rchild!=NULL && p->LTag== Link) { que.push(p->rchild); }
         }
         return NULL;
     }
 
     BTreeNode *getParent(BTreeNode *son){
-        preOrderGetParent(son NULL root);
+        preOrderGetParent(son, NULL, root);
         return parent;
     }
 
@@ -213,12 +213,12 @@ struct BiTree{
         inOrderThreading();
         BTreeNode *p = begin;
         while(p != end){
-            while(p->LTag==Link) p=p->left;
+            while(p->LTag==Link) p=p->lchild;
             p->display();
             while(p->RTag==Thread && p != end){
-                p = p->right;   p->display();
+                p = p->rchild;   p->display();
             }
-            p=p->right;
+            p=p->rchild;
         }
         end->display();
         cout << endl;
@@ -229,14 +229,14 @@ struct BiTree{
         BTreeNode *p = end;
         while(p != begin){
             if(p->LTag==Link){
-                p=p->left;
+                p=p->lchild;
                 while(p->RTag==Link){
-                    p=p->right;
+                    p=p->rchild;
                 }
             }
             p->display();
             while(p->LTag==Thread && p != begin){
-                p = p->left;   p->display();
+                p = p->lchild;   p->display();
             }
         }
         cout << endl;
@@ -249,17 +249,17 @@ struct BiTree{
         preOrderThreading();
 //        begin->display();
 //        end->display();
-//        .root
-//        .leftstack<pair<BTreeNode* int> > sta;
-//        .right
+//        1.root
+//        2.leftstack<pair<BTreeNode*, int> > sta;
+//        3.rchild
         BTreeNode *p = begin;
         while(p != NULL){
 
-            if(p->LTag==Link) { p->display(); p=p->left;}
+            if(p->LTag==Link) { p->display(); p=p->lchild;}
             while(p->RTag==Thread && p != end){
-                  p->display(); p = p->right;
+                  p->display(); p = p->rchild;
             }
-            if(p->RTag==Link && p->LTag==Thread) {  p->display(); p = p->right; }
+            if(p->RTag==Link && p->LTag==Thread) {  p->display(); p = p->rchild; }
         }
         cout << endl;
 
@@ -272,7 +272,7 @@ struct BiTree{
 
         if(p!= NULL){
             while(p!=end ){
-                while(p->RTag==Thread){ p->display(); p=p->right; }
+                while(p->RTag==Thread){ p->display(); p=p->rchild; }
                 p->display();
                 p=getParent(p);
 
@@ -290,15 +290,15 @@ struct BiTree{
 
         if(p!= NULL){
             while(p!=begin ){
-                while(p!=begin &&p->LTag==Thread){ p->display(); p=p->left; }
+                while(p!=begin &&p->LTag==Thread){ p->display(); p=p->lchild; }
                 p->display();
-                if(p->RTag==Link) p=p->right;
-                else if(p->LTag==Link) p=p->left;
+                if(p->RTag==Link) p=p->rchild;
+                else if(p->LTag==Link) p=p->lchild;
             }
         }cout << endl;
     }
     private:
-        BTreeNode* parent=NULL *begin=NULL *end=NULL;
+        BTreeNode* parent=NULL, *begin=NULL, *end=NULL;
         //写得这么长。。这就没意思了。。
     void preOrderThread_reverse(){cout << "线索化前序遍历倒序：";
         preOrderThreading();
@@ -307,94 +307,94 @@ struct BiTree{
         bool f=false;//标记begin是否被两次遍历
         while(p != NULL){
 
-            while(p->LTag==Thread) { p->display(); p=p->left;}
-            if(p->LTag==Link && p->left !=NULL) {
+            while(p->LTag==Thread) { p->display(); p=p->lchild;}
+            if(p->LTag==Link && p->lchild !=NULL) {
                 p->display();
                 p = getParent(p);
-                if(p==begin && f==){//标记begin是否被两次遍历
+                if(p==begin && f==1){//标记begin是否被两次遍历
                     p->display();
                     break;
                 }else if(p==begin){
-                    f=;
+                    f=1;
                 }
 
                 if(p->LTag==Link){
-                    p=p->left;
-                }else if(p->left==NULL){//左子树为空
+                    p=p->lchild;
+                }else if(p->lchild==NULL){//左子树为空
                     p->display();
                     break;
                 }
                 //让f跳到左子树的最右叶子。(左右都是Thread)
                 //如果有左孩子，没有右孩子，一直往左跳
                 //只要有右孩子，往右跳
-                while(){
+                while(1){
                     if(p->LTag==Link&&p->RTag==Thread){//只有左边
-                        p=p->left;
+                        p=p->lchild;
                     }
-                    else if(p->RTag==Link){//只要有右
-                        p=p->right;
+                    else if(p->RTag==Link){//只要有右,
+                        p=p->rchild;
                     }else if(p->LTag==Thread&&p->RTag==Thread){
                         break;
                     }
                 }
-                p->display(); p = p->left;
+                p->display(); p = p->lchild;
             }
         }
         cout << endl;
     }
-    void preOrderGetParent(BTreeNode *son BTreeNode *pre BTreeNode *now){
+    void preOrderGetParent(BTreeNode *son, BTreeNode *pre, BTreeNode *now){
         if(now!=NULL){
             if(now==son) parent = pre;
             if(now->LTag==Link)
-                preOrderGetParent(son now now->left);
+                preOrderGetParent(son, now, now->lchild);
             if(now->RTag==Link)
-                preOrderGetParent(son now now->right);
+                preOrderGetParent(son, now, now->rchild);
         }
     }
 
     void remove_thead(BTreeNode *now){
         if(now!=NULL){
             if(now->LTag==Thread){
-                now->LTag=Link; now->left=NULL;
+                now->LTag=Link; now->lchild=NULL;
             }
             if(now->RTag==Thread){
-                now->RTag=Link; now->right=NULL;
+                now->RTag=Link; now->rchild=NULL;
             }
             if(now->LTag==Link)
-                remove_thead(now->left);
+                remove_thead(now->lchild);
             if(now->RTag==Link)
-                remove_thead(now->right);
+                remove_thead(now->rchild);
         }
     }
-    //线索化后不可用改起来太麻烦
+    //线索化后不可用,改起来太麻烦
     int getLevel(BTreeNode * p){
         if(p==NULL){
-            return ;
+            return 0;
         }else{
-            return max(+getLevel(p->left) +getLevel(p->right));
+            return max(1+getLevel(p->lchild), 1+getLevel(p->rchild));
         }
     }
-    //线索化后不可用改起来太麻烦
+    //线索化后不可用,改起来太麻烦
     int getNodeSum(BTreeNode * p){
         if(p==NULL){
-            return ;
+            return 0;
         }else{
-            return +getNodeSum(p->left)+getNodeSum(p->right);
+            return 1+getNodeSum(p->lchild)+getNodeSum(p->rchild);
         }
     }
 
     void inOrderThreading(){
-        BTreeNode *p = root *last=NULL; stack<BTreeNode *> sta;
+        BTreeNode *p = root, *last=NULL; stack<BTreeNode *> sta;
         if(p!= NULL){
             while( p!=NULL || !sta.empty()){
-                if(p!=NULL) {sta.push(p);  p=p->left;}
+                if(p!=NULL) {sta.push(p);  p=p->lchild;}
                 else{
                     p = sta.top(); sta.pop();
-                    if(p->left==NULL){   p->left=last; if(last==NULL) {begin=p;} p->LTag=Thread;    }
-                    if(last!=NULL && last->right==NULL){  last->right=p; last->RTag=Thread;  }
-                    //if(p->right != NULL) 就是要让p=NULL才能退栈
+                    if(p->lchild==NULL){   p->lchild=last; if(last==NULL) {begin=p;} p->LTag=Thread;    }
+                    if(last!=NULL && last->rchild==NULL){  last->rchild=p; last->RTag=Thread;  }
+                    //if(p->rchild != NULL) 就是要让p=NULL,才能退栈
                     last = p;
-                    p = p->right;
+                    p = p->rchild;
                 }
             }
             end=last;
@@ -403,18 +403,18 @@ struct BiTree{
         }
     }
     void preOrderThreading(){
-        BTreeNode *p = root *last=NULL; stack<BTreeNode *> sta;
+        BTreeNode *p = root, *last=NULL; stack<BTreeNode *> sta;
         begin=p;
         while(p!=NULL){
 //            last=p;
 //            cout << p->value << " ";
-            if(p->left==NULL){   p->left=last; p->LTag=Thread;    }
-            if(last!=NULL && last->right==NULL){  last->right=p; last->RTag=Thread;  }
+            if(p->lchild==NULL){   p->lchild=last; p->LTag=Thread;    }
+            if(last!=NULL && last->rchild==NULL){  last->rchild=p; last->RTag=Thread;  }
             last=p;
-            if(p->right!=NULL)
-                sta.push(p->right);
+            if(p->rchild!=NULL)
+                sta.push(p->rchild);
             if(p->LTag==Link)
-                p = p->left;
+                p = p->lchild;
             else
                 p = NULL;
             if(p==NULL ){
@@ -429,18 +429,18 @@ struct BiTree{
     }
 
     void postOrderThreading(){
-        BTreeNode *p = root *last=NULL; stack<pair<BTreeNode* int> > sta;
+        BTreeNode *p = root, *last=NULL; stack<pair<BTreeNode*, int> > sta;
         while(p!=NULL || !sta.empty()){
             if(p!=NULL){
-                sta.push(make_pair(p ));
-                p = p->left;
+                sta.push(make_pair(p, 0));
+                p = p->lchild;
             }else{
                 p=sta.top().first;
-                if(sta.top().second == ){
-                    p = p->right; sta.top().second++;
+                if(sta.top().second == 0){
+                    p = p->rchild; sta.top().second++;
                 }else{
-                    if(p->left==NULL){   p->left=last;  p->LTag=Thread;   if(last==NULL) {begin=p;}  }
-                    if(last!=NULL && last->right==NULL){  last->right=p; last->RTag=Thread;  }
+                    if(p->lchild==NULL){   p->lchild=last;  p->LTag=Thread;   if(last==NULL) {begin=p;}  }
+                    if(last!=NULL && last->rchild==NULL){  last->rchild=p; last->RTag=Thread;  }
 
                     last = p;
                     sta.pop();
@@ -458,10 +458,10 @@ struct BiTree{
 void TestQueue();
 int main()
 {
-    freopen("tree.txt" "r" stdin);
-    BiTree tree();
-//    string s=  " abcdf#g####hi";
-//    BiTree tree(s.c_str() s.length());
+    freopen("1.txt", "r", stdin);
+    BiTree tree(4);
+//    string s=  " abcd62f#g####hi";
+//    BiTree tree(s.c_str(), s.length());
 
 //    switch(){实在懒得写界面了。。。。
 //
@@ -487,13 +487,13 @@ int main()
     tree.postOrderThread_reverse();
 
 
-    return ;
+    return 0;
 }
 
 void TestPair(){
-    stack<pair<BTreeNode* int> > sta;
+    stack<pair<BTreeNode*, int> > sta;
     BTreeNode l('c');
-    pair<BTreeNode* int> p(&l ) t;
+    pair<BTreeNode*, int> p(&l, 0), t;
     sta.push(p);
     sta.top().second++;
     sta.top().second++;
@@ -504,9 +504,9 @@ void TestPair(){
 void TestQueue(){
     queue<int> que;
 
-    que.push();
-    que.push();
-    que.push();
+    que.push(2);
+    que.push(22);
+    que.push(222);
 
     cout <<que.front() << " "; que.pop();
     cout <<que.front() << " "; que.pop();
@@ -515,10 +515,10 @@ void TestQueue(){
 }
 
 void TestBTNode(){//不能再TBNode的析构函数里写delete l；delete r；
-//    BTreeNode *ss = new  BTreeNode();
-//    BTreeNode l( ss NULL);
+//    BTreeNode *ss = new  BTreeNode(666);
+//    BTreeNode l(2, ss, NULL);
 
-//    BTreeNode root( &l NULL);
+//    BTreeNode root(3, &l, NULL);
 //    root.display();
 }
 
