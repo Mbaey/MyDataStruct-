@@ -13,7 +13,7 @@ int find(int i){
 void Union(int a, int b){
     a= find(a);
     b= find(b);
-    if(a != b){
+    if(a != b){//此处真是运气好， a是兴趣，b是人。 刚好让人变成了根（小的在上）
         f[a] = b;
     }
 }
