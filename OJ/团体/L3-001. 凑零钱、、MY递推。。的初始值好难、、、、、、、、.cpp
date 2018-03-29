@@ -197,7 +197,10 @@ int main()
 //        }
 //    }
 //    cout << fd[0][m]<<endl;
-/*d(i,j) = max{d(i-1, j), d(i-1, j-a[i]) + 1}  答案为 d(n, m)*/
+/*d(i,j) = max{d(i-1, j), d(i-1, j-a[i]) + 1}  答案为 d(n, m)
+才发现这个定义是 在价值<m的情况下的最大硬币数
+本题应该是 价值=m的情况下的 字典序最小的最大硬币数
+*/
     for(int i=0; i<n; i++) {
         for(int j=a[i]; j<=m; j++){
             fd[i][j] = (i==0?0:fd[i-1][j]);
