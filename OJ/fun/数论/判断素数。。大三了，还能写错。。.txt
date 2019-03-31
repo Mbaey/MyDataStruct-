@@ -1,0 +1,16 @@
+bool isPrime(int x){
+	if( x < 2)//不可少了这个
+		return false;
+	_for(i, 2, int(sqrt(x))+1){//必须要把sqrt的结果截断
+		if(x % i == 0){
+			return false;
+		}
+	}
+	return true;
+} 
+
+bool isprime(int x)
+{
+    for(int i=2;i*i<=x;i++) if(x % i == 0) return false;
+    return true;
+} 
