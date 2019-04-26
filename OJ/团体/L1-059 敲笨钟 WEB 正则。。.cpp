@@ -12,7 +12,7 @@ int main()
         getline(cin,str);
         if(regex_match(str,regex(".*ong,.*ong\\.")))  //对字符串进行模式匹配,true为匹配成功
         {
-            cout << regex_replace(str,regex("[[:alpha:]]* [[:alpha:]]* [[:alpha:]]*\\."),"qiao ben zhong.") << endl;
+            cout << regex_replace(str, regex("[[:alpha:]]* [[:alpha:]]* [[:alpha:]]*\\."),"qiao ben zhong.") << endl;
         }
         else
         {
